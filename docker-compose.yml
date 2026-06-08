@@ -1,0 +1,14 @@
+services:
+  embedding-api:
+    build: .
+    container_name: ollama-embedding-api
+    restart: unless-stopped
+    ports:
+      - "3210:3210"
+    environment:
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      ALLOWED_EMBEDDING_MODELS: ${ALLOWED_EMBEDDING_MODELS:-bge-m3:latest,mxbai-embed-large:latest}
+      DEFAULT_EMBEDDING_MODEL: ${DEFAULT_EMBEDDING_MODEL:-bge-m3:latest}
+      REQUEST_TIMEOUT_SECONDS: ${REQUEST_TIMEOUT_SECONDS:-120}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
