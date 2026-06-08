@@ -19,26 +19,26 @@ Ollama must already be running on the host. Then start the API:
 docker compose up --build -d
 ```
 
-The Compose file publishes only port `3210`, so clients should call `y2k-station:3210` over Tailscale DNS/LAN.
+The Compose file publishes only port `3210`, so clients should call `your_ip:3210` over Tailscale DNS/LAN.
 
 ## Endpoints
 
 ### Health
 
 ```bash
-curl http://y2k-station:3210/health
+curl http://your_ip:3210/health
 ```
 
 ### List models
 
 ```bash
-curl http://y2k-station:3210/v1/models
+curl http://your_ip:3210/v1/models
 ```
 
 ### OpenAI-compatible embeddings
 
 ```bash
-curl http://y2k-station:3210/v1/embeddings \
+curl http://your_ip:3210/v1/embeddings \
   -H "Content-Type: application/json" \
   -d '{"model":"bge-m3:latest","input":"hello from LAN"}'
 ```
@@ -46,7 +46,7 @@ curl http://y2k-station:3210/v1/embeddings \
 ### Ollama-style embeddings
 
 ```bash
-curl http://y2k-station:3210/api/embed \
+curl http://your_ip:3210/api/embed \
   -H "Content-Type: application/json" \
   -d '{"model":"mxbai-embed-large:latest","input":"hello from LAN"}'
 ```
@@ -70,7 +70,7 @@ This API acts as the embedding provider. Qdrant acts as the vector store.
 
 The normal retrieval flow is:
 
-1. Send document text to `http://y2k-station:3210/v1/embeddings`.
+1. Send document text to `http://your_ip:3210/v1/embeddings`.
 2. Receive the embedding vector.
 3. Store `{text, metadata, vector}` in a Qdrant collection.
 4. Send user query text to the same embedding API.
@@ -109,7 +109,7 @@ qdrant.recreate_collection(
 ```python
 import requests
 
-EMBEDDING_API = "http://y2k-station:3210/v1/embeddings"
+EMBEDDING_API = "http://your_ip:3210/v1/embeddings"
 MODEL = "bge-m3:latest"
 
 
@@ -196,7 +196,7 @@ import requests
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
-EMBEDDING_API = "http://y2k-station:3210/v1/embeddings"
+EMBEDDING_API = "http://your_ip:3210/v1/embeddings"
 QDRANT_URL = "http://localhost:6333"
 COLLECTION = "docs_bge_m3"
 MODEL = "bge-m3:latest"
